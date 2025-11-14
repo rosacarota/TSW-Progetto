@@ -1,8 +1,5 @@
 package control.search;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,24 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.google.gson.Gson;
-import exception.GenericError;
+import model.DBConnection;
 
 @WebServlet("/SearchBar")
 public class SearchBar extends HttpServlet {
     private static final String TABLE_NAME = "Maglietta";
-    private static final DataSource ds;
-
-    // Connessione database
-    static {
-        try {
-            Context init = new InitialContext();
-            Context env = (Context) init.lookup("java:comp/env");
-
-            ds = (DataSource) env.lookup("jdbc/whiTee");
-        } catch (NamingException e) {
-            throw new GenericError();
-        }
-    }
+    private static final DataSource ds = DBConnection.getDataSource();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

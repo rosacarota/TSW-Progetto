@@ -1,11 +1,7 @@
 package model.acquisto;
 
-import exception.GenericError;
 import model.DAOInterface;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import model.DBConnection;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,19 +12,7 @@ import java.util.Collection;
 
 public class AcquistoDAO implements DAOInterface<AcquistoBean, Integer> {
     private static final String TABLE_NAME = "Acquisto";
-    private static final DataSource ds;
-
-    // Connessione database
-    static {
-        try {
-            Context init = new InitialContext();
-            Context env = (Context) init.lookup("java:comp/env");
-
-            ds = (DataSource) env.lookup("jdbc/whiTee");
-        } catch (NamingException e) {
-            throw new GenericError();
-        }
-    }
+    private static final DataSource ds = DBConnection.getDataSource();
 
     @Override
     public AcquistoBean doRetrieveByKey(Integer code) throws SQLException {

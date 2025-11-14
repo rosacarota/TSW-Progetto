@@ -1,32 +1,16 @@
 package model.maglietta;
 
-import exception.GenericError;
 import model.DAOInterface;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import model.DBConnection;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
 
 public class MagliettaDAO implements DAOInterface<MagliettaBean, Integer> {
     private static final String TABLE_NAME = "Maglietta";
-    private static final DataSource ds;
+    private static final DataSource ds = DBConnection.getDataSource();
     private static final List<String> ORDERS = new ArrayList<>(Arrays.asList("nome", "prezzo", "colore", "tipo"));
 
-    // Connessione database
-    static {
-        try {
-            Context init = new InitialContext();
-            Context env = (Context) init.lookup("java:comp/env");
-
-            ds = (DataSource) env.lookup("jdbc/whiTee");
-        } catch (NamingException e) {
-            throw new GenericError();
-        }
-    }
-    
     public synchronized Collection<MagliettaBean> doRetrieveByTipo(String tipo) throws SQLException {
         Collection<MagliettaBean> maglietteTipo = new ArrayList<>();
 

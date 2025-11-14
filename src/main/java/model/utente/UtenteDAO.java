@@ -1,10 +1,8 @@
 package model.utente;
 
 import model.DAOInterface;
+import model.DBConnection;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,19 +14,7 @@ import java.sql.Date;
 
 public class UtenteDAO implements DAOInterface<UtenteBean, String> {
     private static final String TABLE_NAME = "Utente";
-    private static final DataSource ds;
-
-    // Connessione database
-    static {
-        try {
-            Context init = new InitialContext();
-            Context env = (Context) init.lookup("java:comp/env");
-
-            ds = (DataSource) env.lookup("jdbc/whiTee");
-        } catch (NamingException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static final DataSource ds = DBConnection.getDataSource();
     
     @Override
     public UtenteBean doRetrieveByKey(String code) throws SQLException {

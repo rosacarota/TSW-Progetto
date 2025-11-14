@@ -1,11 +1,7 @@
 package model.ordine;
 
-import exception.GenericError;
 import model.DAOInterface;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import model.DBConnection;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDate;
@@ -16,20 +12,8 @@ import java.util.List;
 
 public class OrdineDAO implements DAOInterface<OrdineBean, Integer> {
     private static final String TABLE_NAME = "Ordine";
-    private static final DataSource ds;
+    private static final DataSource ds = DBConnection.getDataSource();
     private static final List<String> ORDERS = new ArrayList<>(Arrays.asList("username", "dataOrdine"));
-
-    // Connessione database
-    static {
-        try {
-            Context init = new InitialContext();
-            Context env = (Context) init.lookup("java:comp/env");
-
-            ds = (DataSource) env.lookup("jdbc/whiTee");
-        } catch (NamingException e) {
-            throw new GenericError();
-        }
-    }
 
     @Override
     public OrdineBean doRetrieveByKey(Integer code) throws SQLException {

@@ -1,11 +1,7 @@
 package model.misura;
 
-import exception.GenericError;
+import model.DBConnection;
 import model.acquisto.AcquistoBean;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,19 +12,7 @@ import java.util.Collection;
 
 public class MisuraDAO {
     private static final String TABLE_NAME = "Misura";
-    private static final DataSource ds;
-
-    // Connessione database
-    static {
-        try {
-            Context init = new InitialContext();
-            Context env = (Context) init.lookup("java:comp/env");
-
-            ds = (DataSource) env.lookup("jdbc/whiTee");
-        } catch (NamingException e) {
-            throw new GenericError();
-        }
-    }
+    private static final DataSource ds = DBConnection.getDataSource();
 
     public void doSave(MisuraBean product) throws SQLException {
         String query = "INSERT INTO " + TABLE_NAME + " (IDMaglietta, taglia, quantita)" + " VALUES (?, ?, ?)";
